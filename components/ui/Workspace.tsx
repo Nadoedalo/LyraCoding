@@ -1,30 +1,29 @@
 import { Component, useMemo } from 'react';
-import * as THREE from 'three';
 import { Canvas,  } from "@react-three/fiber";
 import { shapeStore } from "../../store";
+import { observer } from "mobx-react-lite";
+
+const MeshView = observer(({ store }: {store: shapeStore}) => {
+    console.log('here render??', store.shapesArr, store.shapesArr[0]);
+    return (<>
+        {
+            store.shapesArr.map((shape, shapeIndex) => (
+                <mesh key={shapeIndex}>
+                    <shapeGeometry args={[shape]} />
+                    <meshBasicMaterial color="green"/>
+                </mesh>
+            ))
+        }
+    </>);
+}, {
+    forwardRef: true
+});
 
 export class Workspace extends Component<any, any> {
-    points = [[-100, 100], [100, 100], [100, -100], [-100, -100]]
-    verticies() {
-        return this.points.map(point => new THREE.Vector2(...point));
-    }
-    someShape() {
-        return new THREE.Shape(this.verticies());
-    }
     render() {
         return <div className="workspace">
             <Canvas orthographic>
-                <mesh>
-                    <shapeGeometry args={[this.someShape()]}>
-                    </shapeGeometry>
-                    <meshBasicMaterial color="green" wireframe/>
-                    {/*{
-                        shapeStore.shapesArr.map((el) => (
-                                <>Test {el}</>
-                            )
-                        )
-                    }*/}
-                </mesh>
+                <MeshView store={shapeStore} />
             </Canvas>
         </div>;
     }
