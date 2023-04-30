@@ -1,5 +1,9 @@
 # This is a test task made for LyraSolar
 
+To setup run `npm i` && `npm run dev` -> afterwards should be available under `http://localhost:3000`
+
+It's still Work In Progress[WIP]
+
 ## Chosen technologies:
 TypeScript, Next / React, MobX, ThreeJS & React-Three-Fiber, Jest
 
