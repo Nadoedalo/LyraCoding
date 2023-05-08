@@ -1,20 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import * as THREE from "three";
-import { DragControls } from 'three/addons/controls/DragControls.js';
-
-/*const controls = new DragControls( objects, camera, renderer.domElement );
-
-controls.addEventListener( 'dragstart', function ( event ) {
-
-    event.object.material.emissive.set( 0xaaaaaa );
-
-} );
-
-controls.addEventListener( 'dragend', function ( event ) {
-
-    event.object.material.emissive.set( 0x000000 );
-
-} );*/
 
 class ShapeStore {
     pointsArr = [];

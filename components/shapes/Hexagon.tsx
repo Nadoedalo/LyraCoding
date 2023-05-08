@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { shapeStore } from "../../store";
 
-const hexagon = [[-100, 0], [-50, 80], [50, 80], [100, 0], [50, -80], [-50, -80]];
+const hexagon = [[-1, 0], [-0.5, 0.8], [0.5, 0.8], [1, 0], [0.5, -0.8], [-0.5, -0.8]];
 
 export class Hexagon extends Component<any, any> {
     addHexagon() {

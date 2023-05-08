@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { shapeStore } from "../../store";
 
-const triangle = [[0, 100], [75, 0], [-75, 0]];
+const triangle = [[0, 1], [0.75, 0], [-0.75, 0]];
 
 export class Triangle extends Component<any, any> {
     addTriangle() {

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { ToolBar, Workspace } from "../components/ui";
+import {ToolBar, TestWorkspace, Workspace} from "../components/ui";
 import { Component } from "react";
 
 export default class Main extends Component<any, any>{
