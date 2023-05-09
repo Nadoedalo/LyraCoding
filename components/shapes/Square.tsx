@@ -1,15 +1,15 @@
-import { Component } from 'react';
-import { shapeStore } from "../../store";
+import { AbstractShape } from './AbstractShape';
+import { FaSquareFull } from "react-icons/fa";
 
-const square = [[-0.75, 0.75], [0.75, 0.75], [0.75, -0.75], [-0.75, -0.75]];
-
-export class Square extends Component<any, any> {
-    addSquare() {
-        shapeStore.addShape(square);
+export class Square extends AbstractShape {
+    shape = [[-0.75, 0.75], [0.75, 0.75], [0.75, -0.75], [-0.75, -0.75]];
+    title = "Add Square";
+    constructor(props) {
+        super(props);
+        return this;
     }
-    render() {
-        return <>
-            <span onClick={this.addSquare}>Square</span>
-        </>;
+
+    iconElement() {
+        return <FaSquareFull />;
     }
 }

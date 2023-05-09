@@ -25,10 +25,21 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
     > div {
       display: flex;
       flex-direction: column;
       padding-top: 3em;
+      font-size: 2em;
+      > span {
+        padding: 0.25rem 0;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        &:hover, &.active {
+          color: #bebebe;
+        }
+      }
       &:first-child {
         padding-top: 0;
       }

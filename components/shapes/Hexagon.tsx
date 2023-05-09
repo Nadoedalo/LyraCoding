@@ -1,15 +1,15 @@
-import { Component } from 'react';
-import { shapeStore } from "../../store";
+import { AbstractShape } from './AbstractShape';
+import { MdHexagon } from "react-icons/md";
 
-const hexagon = [[-1, 0], [-0.5, 0.8], [0.5, 0.8], [1, 0], [0.5, -0.8], [-0.5, -0.8]];
-
-export class Hexagon extends Component<any, any> {
-    addHexagon() {
-        shapeStore.addShape(hexagon);
+export class Hexagon extends AbstractShape {
+    shape = [[-1, 0], [-0.5, 0.8], [0.5, 0.8], [1, 0], [0.5, -0.8], [-0.5, -0.8]];
+    title = "Add Hexagon";
+    constructor(props) {
+        super(props);
+        return this;
     }
-    render() {
-        return <>
-            <span onClick={this.addHexagon}>Hexagon</span>
-        </>;
+
+    iconElement() {
+        return <MdHexagon />;
     }
 }

@@ -1,20 +1,28 @@
-import { Component } from 'react';
-import { ClosestPointTool, MoveTool, SelectTool } from "../tools";
-import { Triangle, Square, Hexagon } from "../shapes";
+import { Component, createElement } from 'react';
+import { shapes } from "../shapes";
+import { tools } from "../tools";
 
+/**
+ * Just a toolbar with auto-imported tools
+ * */
 export class ToolBar extends Component<any, any> {
     render() {
         return <div className="toolbar">
             <div className="tools">
-                {/*TODO auto-import tools*/}
-                <ClosestPointTool />
-                <MoveTool />
-                <SelectTool />
+                {
+                    tools.map((tool) => {
+                            return createElement(tool, { key: tool.name });
+                        }
+                    )
+                }
             </div>
             <div className="shapes">
-                <Triangle />
-                <Square />
-                <Hexagon />
+                {
+                    shapes.map((shape) => {
+                            return createElement(shape, { key: shape.name });
+                        }
+                    )
+                }
             </div>
         </div>
     }

@@ -1,16 +1,15 @@
-import { Component } from 'react';
-import { shapeStore } from "../../store";
+import { AbstractShape } from './AbstractShape';
+import { BsTriangleFill } from "react-icons/bs";
 
-const triangle = [[0, 1], [0.75, 0], [-0.75, 0]];
-
-export class Triangle extends Component<any, any> {
-    addTriangle() {
-        shapeStore.addShape(triangle);
-        return false;
+export class Triangle extends AbstractShape {
+    shape = [[0, 1], [0.75, 0], [-0.75, 0]];
+    title = "Add Triangle";
+    constructor(props) {
+        super(props);
+        return this;
     }
-    render() {
-        return <>
-            <span onClick={this.addTriangle}>Triangle</span>
-        </>;
+
+    iconElement() {
+        return <BsTriangleFill />;
     }
 }

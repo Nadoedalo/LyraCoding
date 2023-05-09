@@ -5,6 +5,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import { MousePointer } from ".";
+import { toolStore } from "../../../store";
+import { toolsConfig } from "../../../configs/tools.config";
 
 /**
  * The main collection to draw all the meshes with various shapes
@@ -25,12 +27,11 @@ export const MeshCollection = observer(({ store }: { store: shapeStore }) => {
  * Does:
  * Selecting, Dragging
  * And supposedly should provide support elements for Closest Point Tool
- * */
-const MeshView = ({index, shape, shapeIndex, ray}) => {
+ * *///observer(({index, shape, shapeIndex, ray})) => {
+const MeshView = observer(({ shape, index }) => {
     const {size, viewport} = useThree()
     const aspect = size.width / viewport.width
     const [hover, setHover] = useState(false);
-    const [active, setActive] = useState(false);
     const [position, setPosition] = useState([0, 0, 0]);
     const geometry = useRef();
     const mesh = useRef();
@@ -38,8 +39,12 @@ const MeshView = ({index, shape, shapeIndex, ray}) => {
     const plane = useRef();
     const raycaster = useRef();
     const dot = new THREE.Vector3(0, 0, 1);
-    const dragBind = useDrag(({offset: [x, y]}) => {
-        setPosition([x / aspect, -y / aspect, 0]);
+    const dragBind = useDrag((state) => {
+        state.event.stopPropagation();
+        if(toolStore.activeTools[toolsConfig.MOVE_TOOL]) {
+            const {offset: [x, y]} = state;
+            setPosition([x / aspect, -y / aspect, 0]);
+        }
     }, {});
     useLayoutEffect(() => {
         if (outline.current && geometry.current) {
@@ -48,15 +53,22 @@ const MeshView = ({index, shape, shapeIndex, ray}) => {
     }, [geometry])
     return (<group position={position}>
         <mesh
-            key={shapeIndex}
+            key={index}
             {...dragBind()}
-            onClick={() => setActive(!active)}
-            onPointerOver={() => {
+            onClick={(e) => {
+                e.stopPropagation();
+                if(toolStore.activeTools[toolsConfig.SELECT_TOOL]) {
+                    shapeStore.selectShape(shape);
+                }
+            }}
+            onPointerOver={(e) => { // FIXME: Glitchy because it isn't tied through Raycaster but it should
+                e.stopPropagation();
                 if (!hover) {
                     setHover(true)
                 }
             }}
-            onPointerOut={() => {
+            onPointerOut={(e) => {
+                e.stopPropagation();
                 if (hover) {
                     setHover(false)
                 }
@@ -71,7 +83,7 @@ const MeshView = ({index, shape, shapeIndex, ray}) => {
         </mesh>
         <mesh>
             <lineSegments ref={outline}>
-                <meshBasicMaterial color="#000000" visible={active}/>
+                <meshBasicMaterial color="#000000" visible={shape.active}/>
             </lineSegments>
         </mesh>
         <raycaster
@@ -79,10 +91,10 @@ const MeshView = ({index, shape, shapeIndex, ray}) => {
         ></raycaster>
         <plane args={[dot, 0]} ref={plane}/>
         <MousePointer
-            ray={ray} mesh={mesh.current}
+            mesh={mesh.current}
             plane={plane.current}
             raycaster={raycaster.current}
             index={index}
         />
     </group>)
-}
+})

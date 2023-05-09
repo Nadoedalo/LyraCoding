@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { ToolStore } from "./ToolStore";
 import * as THREE from "three";
 
 class ShapeStore {
@@ -18,7 +19,8 @@ class ShapeStore {
         this.verticesArr.push(vertices);
         const shape = this.getShape(vertices);
         this.shapesArr.push({
-            shape: shape
+            shape: shape,
+            active: false,
         });
         return this.shapesArr;
     }
@@ -28,12 +30,18 @@ class ShapeStore {
     getShape(vertices) {
         return new THREE.Shape(vertices);
     }
-    getOutline(shape) {
-        const edges = new THREE.EdgesGeometry(shape);
-        return new THREE.LineSegments(edges, new THREE.LineBasicMaterial({
-            color: 0xffffff
-        }));
+    selectShape(shape) {
+        this.deactivateShapes();
+        shape.active = true;
+    }
+    deactivateShapes() {
+        // currently only one shape can be active
+        const activeShape = this.shapesArr.find(shape => shape.active);
+        if(activeShape) {
+            activeShape.active = false;
+        }
     }
 }
 
 export const shapeStore = new ShapeStore();
+export const toolStore = new ToolStore();
