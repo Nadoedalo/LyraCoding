@@ -16,7 +16,7 @@ export const MeshCollection = observer(({ store }: { store: shapeStore }) => {
     return (<group>
         {
             store.shapesArr.map((shapeObj, shapeIndex) => (
-                <MeshView shape={shapeObj} index={shapeIndex} key={shapeIndex}/>
+                <MeshView shape={shapeObj} position={shapeStore.positionArr[shapeIndex]} index={shapeIndex} key={shapeIndex}/>
             ))
         }
     </group>);
@@ -27,12 +27,12 @@ export const MeshCollection = observer(({ store }: { store: shapeStore }) => {
  * Does:
  * Selecting, Dragging
  * And supposedly should provide support elements for Closest Point Tool
- * *///observer(({index, shape, shapeIndex, ray})) => {
-const MeshView = observer(({ shape, index }) => {
-    const {size, viewport} = useThree()
-    const aspect = size.width / viewport.width
+ * FIXME separate module? Seems unnecessary due to low logic in MeshCollection
+ * */
+const MeshView = observer(({ shape, index, position }) => {
+    const {size, viewport} = useThree();
+    const aspect = size.width / viewport.width;
     const [hover, setHover] = useState(false);
-    const [position, setPosition] = useState([0, 0, 0]);
     const geometry = useRef();
     const mesh = useRef();
     const outline = useRef();
@@ -43,7 +43,8 @@ const MeshView = observer(({ shape, index }) => {
         state.event.stopPropagation();
         if(toolStore.activeTools[toolsConfig.MOVE_TOOL]) {
             const {offset: [x, y]} = state;
-            setPosition([x / aspect, -y / aspect, 0]);
+            const position = [x / aspect, -y / aspect, 0]
+            shapeStore.updatePosition(index, position);
         }
     }, {});
     useLayoutEffect(() => {
@@ -52,6 +53,7 @@ const MeshView = observer(({ shape, index }) => {
         }
     }, [geometry])
     return (<group position={position}>
+        {/*Actual shape*/}
         <mesh
             key={index}
             {...dragBind()}
@@ -81,11 +83,13 @@ const MeshView = observer(({ shape, index }) => {
                 color={shape.active || hover ? '#03DAC6' : '#A3D951'}
             />
         </mesh>
+        {/*Outline*/}
         <mesh>
             <lineSegments ref={outline}>
                 <meshBasicMaterial color="#3700B3" visible={shape.active}/>
             </lineSegments>
         </mesh>
+        {/*Raycaster, Plane & MousePointer necessary for the Closest Point Tool*/}
         <raycaster
             ref={raycaster}
         ></raycaster>

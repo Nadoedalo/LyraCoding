@@ -12,6 +12,8 @@ import {useEffect, useRef} from "react";
  * And failed miserably because I get weird point coordinates
  * Currently everything is commented out to leave traces of failed attempts
  * I always felt that I'm pretty close with the solution
+ * I could have gone for pure geometry solution BUT raycaster should support ANY kind of shape
+ * not only lined one
  * */
 export const MousePointer = ({mesh, plane, raycaster, index}) => {
     const {size, camera, mouse} = useThree();

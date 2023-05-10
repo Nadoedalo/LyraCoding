@@ -3,19 +3,25 @@ import { ToolStore } from "./ToolStore";
 import * as THREE from "three";
 
 class ShapeStore {
-    pointsArr = [];
-    shapesArr = [];
-    verticesArr = [];
-    mousePos = { x: 0, y : 0 };
+    pointsArr = []; // array of basic points for the shapes
+    positionArr = []; // array of position set by user dragging
+    verticesArr = []; // derivative array of THREE.Vector3 built by points
+    shapesArr = []; // derivative array of THREE.Shape build by vertices
 
     constructor() {
         makeAutoObservable(this);
         return this;
     }
 
-    addShape(coordinates) {
-        this.pointsArr.push(coordinates);
-        const vertices = this.getVertices(coordinates);
+    /**
+     * Basic method of adding a new shape to the array
+     * Creates all the necessary structures and provides access by index
+     * TODO shape removal?
+     * */
+    addShape(points, position = [0, -0, 0]) {
+        this.pointsArr.push(points);
+        const vertices = this.getVertices(points);
+        this.positionArr.push(position);
         this.verticesArr.push(vertices);
         const shape = this.getShape(vertices);
         this.shapesArr.push({
@@ -40,6 +46,19 @@ class ShapeStore {
         if(activeShape) {
             activeShape.active = false;
         }
+    }
+    updatePosition(index, position) {
+        this.positionArr[index] = position;
+    }
+    /**
+     * provides all the data necessary to reconstruct exact state of the application
+     * TODO import?
+     * */
+    export() {
+        return JSON.stringify({
+            points: this.pointsArr,
+            position: this.positionArr,
+        })
     }
 }
 
