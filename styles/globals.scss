@@ -19,13 +19,15 @@ main {
   height: 100%;
 
   .toolbar {
-    background: green;
-    width: 4em;
+    background: #03DAC6;
+    width: 3em;
     padding: 0.5em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    box-sizing: border-box;
+    border-right: 2px solid #3700B3;
     > div {
       display: flex;
       flex-direction: column;
@@ -36,8 +38,9 @@ main {
         cursor: pointer;
         display: flex;
         justify-content: center;
+        transition: 0.3s ease;
         &:hover, &.active {
-          color: #bebebe;
+          color: #3700B3;
         }
       }
       &:first-child {
@@ -47,7 +50,9 @@ main {
   }
 
   .workspace {
-    background: red;
+    background-color: #EFEFEF;
+    background-image: radial-gradient(black 1px, transparent 0);
+    background-size: 20px 20px;
     flex-grow: 1;
   }
 }

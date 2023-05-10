@@ -78,12 +78,12 @@ const MeshView = observer(({ shape, index }) => {
         >
             <shapeGeometry args={[shape.shape]} ref={geometry}/>
             <meshBasicMaterial
-                color={hover ? '#009900' : '#BEBEBE'}
+                color={shape.active || hover ? '#03DAC6' : '#A3D951'}
             />
         </mesh>
         <mesh>
             <lineSegments ref={outline}>
-                <meshBasicMaterial color="#000000" visible={shape.active}/>
+                <meshBasicMaterial color="#3700B3" visible={shape.active}/>
             </lineSegments>
         </mesh>
         <raycaster
